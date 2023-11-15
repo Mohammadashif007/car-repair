@@ -8,6 +8,8 @@ import About from "../Pages/About/About";
 import Login from "../Pages/Login/Login";
 import Registration from "../Pages/Registration/Registration";
 import PrivateRoute from "./PrivateRoute";
+import Confirm_service from "../Pages/Home/Home/Our_services/Confirm_service";
+import NewBookings from "../Pages/NewBookings/NewBookings";
 
 const routes = createBrowserRouter([
     {
@@ -28,7 +30,8 @@ const routes = createBrowserRouter([
             },
             {
                 path: '/bookings',
-                element: <PrivateRoute><Bookings></Bookings></PrivateRoute>
+                element: <PrivateRoute><Bookings></Bookings></PrivateRoute>,
+                loader: () => fetch('http://localhost:5000/bookings')
             },
             {
                 path: '/about',
@@ -41,6 +44,15 @@ const routes = createBrowserRouter([
             {
                 path: '/registration',
                 element: <Registration></Registration>
+            },
+            {
+                path: '/confirm_service/:id',
+                element: <PrivateRoute><Confirm_service></Confirm_service></PrivateRoute>,
+                loader: ({params}) => fetch(`http://localhost:5000/services/${params.id}`)
+            },
+            {
+                path: '/new_bookings',
+                element: <PrivateRoute><NewBookings></NewBookings></PrivateRoute>,
             }
         ]
     }

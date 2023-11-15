@@ -23,6 +23,9 @@ const Header = () => {
                     <li>
                         <Link to="/New_service">New Service</Link>
                     </li>
+                    <li>
+                        <Link to="/new_bookings">New Bookings</Link>
+                    </li>
                 </>
             ) : (
                 ""
