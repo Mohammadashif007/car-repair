@@ -1,14 +1,43 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../providers/AuthProviders";
 
 const Header = () => {
-    const navLink = <>
-        <li><Link to='/'>Home</Link></li>
-        <li><Link to='/about'>About</Link></li>
-        <li><Link to='/bookings'>Bookings</Link></li>
-        <li><Link to='/add_service'>Add Service</Link></li>
-        <li><Link to='/New_service'>New Service</Link></li>
-    </>
+    const { user, logOut } = useContext(AuthContext);
+    const navLink = (
+        <>
+            <li>
+                <Link to="/">Home</Link>
+            </li>
+            <li>
+                <Link to="/about">About</Link>
+            </li>
+            {user ? (
+                <>
+                    <li>
+                        <Link to="/bookings">Bookings</Link>
+                    </li>
+                    <li>
+                        <Link to="/add_service">Add Service</Link>
+                    </li>
+                    <li>
+                        <Link to="/New_service">New Service</Link>
+                    </li>
+                </>
+            ) : (
+                ""
+            )}
+        </>
+    );
+
+    const handleLogOut = () => {
+        logOut()
+            .then(() => {})
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
+
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
@@ -39,12 +68,19 @@ const Header = () => {
                 <a className="btn btn-ghost text-xl">daisyUI</a>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    {navLink}
-                </ul>
+                <ul className="menu menu-horizontal px-1">{navLink}</ul>
             </div>
             <div className="navbar-end">
-                <a className=""><Link to='/login'>Login</Link></a>
+                {user?.email ? <p>{user.email}</p> : ""}
+                {user ? (
+                    <a className="btn" onClick={handleLogOut}>
+                        <Link to="/login">Logout</Link>
+                    </a>
+                ) : (
+                    <a className="btn">
+                        <Link to="/login">Login</Link>
+                    </a>
+                )}
             </div>
         </div>
     );
